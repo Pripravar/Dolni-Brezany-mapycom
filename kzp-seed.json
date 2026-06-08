@@ -1,1 +1,57 @@
-[]
+[
+ {
+  "id": "kzp_KZP_SO_101.2_celek",
+  "so": "SO 101.2",
+  "nazev": "KZP SO 101.2 – celek",
+  "technologickaCast": "komunikace",
+  "verze": "",
+  "schvaleno": true,
+  "poznamka": "",
+  "pdfUrl": "pdf/kzp/kzp_101_2_celek.pdf",
+  "typ": "kzp"
+ },
+ {
+  "id": "kzp_KZP_SO_251.2_Monoliticke_betonove_konstr",
+  "so": "SO 251.2",
+  "nazev": "KZP SO 251.2 – Monolitické betonové konstrukce",
+  "technologickaCast": "betony",
+  "verze": "",
+  "schvaleno": true,
+  "poznamka": "",
+  "pdfUrl": "pdf/kzp/kzp_251_2_betony.pdf",
+  "typ": "kzp"
+ },
+ {
+  "id": "kzp_KZP_SO_251.2_Zapory_a_kotvy",
+  "so": "SO 251.2",
+  "nazev": "KZP SO 251.2 – Zápory a kotvy",
+  "technologickaCast": "zápory a kotvy",
+  "verze": "",
+  "schvaleno": true,
+  "poznamka": "",
+  "pdfUrl": "pdf/kzp/kzp_251_2_zapory.pdf",
+  "typ": "kzp"
+ },
+ {
+  "id": "kzp_KZP_SO_251.2_Mikropiloty",
+  "so": "SO 251.2",
+  "nazev": "KZP SO 251.2 – Mikropiloty",
+  "technologickaCast": "mikropiloty",
+  "verze": "",
+  "schvaleno": true,
+  "poznamka": "",
+  "pdfUrl": "pdf/kzp/kzp_251_2_mikropiloty.pdf",
+  "typ": "kzp"
+ },
+ {
+  "id": "kzp_KZP_SO_251.2_Zasypy",
+  "so": "SO 251.2",
+  "nazev": "KZP SO 251.2 – Zásypy",
+  "technologickaCast": "zásypy",
+  "verze": "",
+  "schvaleno": true,
+  "poznamka": "",
+  "pdfUrl": "pdf/kzp/kzp_251_2_zasypy.pdf",
+  "typ": "kzp"
+ }
+]
