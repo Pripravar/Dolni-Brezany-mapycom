@@ -1,0 +1,12 @@
+{
+  "name": "II/101 Dolní Břežany–Zbraslav",
+  "short_name": "II/101 Břežany",
+  "description": "Mapa stavby II/101 Dolní Břežany–Zbraslav — výkresy, poznámky, úkolníček, deník.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#1a1a2e",
+  "theme_color": "#16213e",
+  "icons": []
+}
