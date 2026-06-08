@@ -5371,16 +5371,25 @@ function showAuthError(msg) {
   if(el) el.textContent = msg || '';
 }
 
+// In-app prohlížeč (WhatsApp/Messenger/Instagram…) – Google OAuth v něm nefunguje
+function isInAppBrowser() {
+  var ua = navigator.userAgent || '';
+  return /FBAN|FBAV|FB_IAB|Instagram|Messenger|WhatsApp|Line\/|MicroMessenger|Twitter|GSA\//i.test(ua);
+}
+
 function signInWithGoogle() {
   if(!authConfigOk()) {
     showAuthError('⚠ Firebase Auth ještě není nakonfigurován. Doplň v index.html FIREBASE_CONFIG (apiKey, messagingSenderId, appId) z Firebase Console.');
     return;
   }
+  if(isInAppBrowser()) {
+    showAuthError('⚠ Jsi v prohlížeči uvnitř jiné aplikace (WhatsApp/Messenger), kde Google přihlášení nefunguje. Otevři appku v Safari/Chrome (klepni ⋯ nebo Sdílet → „Otevřít v Safari"), nebo použij „📱 Přihlásit telefonem" níže.');
+    return;
+  }
   var provider = new firebase.auth.GoogleAuthProvider();
   showAuthError('⏳ Otvírám Google přihlášení…');
-  // Strategie: vždy zkusit POPUP nejdřív (na iOS PWA otevře in-app browser sheet,
-  // který má přístup ke storage PWA a session se po dokončení automaticky uloží).
-  // Redirect se použije jen jako fallback, pokud popup selže.
+  // POPUP nejdřív. Na iOS NEpoužívat redirect fallback – redirect přes firebaseapp.com
+  // padá na „missing initial state" (storage partitioning iOS) → radši navést na telefon/Safari.
   fbAuth.signInWithPopup(provider)
     .then(function(){
       showAuthError('');
@@ -5388,11 +5397,15 @@ function signInWithGoogle() {
     })
     .catch(function(err){
       console.warn('Popup login error:', err && err.code, err && err.message);
-      if(err && (err.code === 'auth/popup-blocked' ||
+      var popupFail = err && (err.code === 'auth/popup-blocked' ||
                  err.code === 'auth/popup-closed-by-user' ||
                  err.code === 'auth/cancelled-popup-request' ||
-                 err.code === 'auth/operation-not-supported-in-this-environment')) {
-        // Fallback: redirect
+                 err.code === 'auth/operation-not-supported-in-this-environment');
+      if(popupFail && (isIOS() || isPWA())) {
+        // Na iOS / v PWA redirect selže → nepřesměrovávej, navedi uživatele
+        showAuthError('Google přihlášení se v tomhle prohlížeči nepovedlo. Zkus to ještě jednou, nebo použij „📱 Přihlásit telefonem" níže (funguje vždy). Případně otevři appku v Safari.');
+      } else if(popupFail) {
+        // Desktop / Android – redirect je v pohodě
         showAuthError('⏳ Přesměrovávám na Google…');
         fbAuth.signInWithRedirect(provider).catch(function(err2){
           console.error('Redirect fallback error:', err2);
@@ -5442,7 +5455,13 @@ if(fbAuth && authConfigOk()) {
     }
   }).catch(function(err) {
     console.error('Redirect result error:', err);
-    showAuthError('Chyba dokončení přihlášení: ' + (err.message || err.code || 'neznámá') + '. Zkus to znovu.');
+    var msg = ((err && err.message) || '') + ' ' + ((err && err.code) || '');
+    if(/missing initial state|missing-or-invalid-nonce|web-storage-unsupported|sessionStorage/i.test(msg)) {
+      showMainView();
+      showAuthError('Google přihlášení přes přesměrování tu nefunguje (omezení iOS / prohlížeče uvnitř aplikace). Otevři appku v Safari, nebo použij „📱 Přihlásit telefonem" níže.');
+    } else {
+      showAuthError('Chyba dokončení přihlášení: ' + (err.message || err.code || 'neznámá') + '. Zkus to znovu.');
+    }
   });
 }
 
