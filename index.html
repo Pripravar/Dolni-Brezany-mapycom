@@ -4119,7 +4119,7 @@ function buildSO() {
       if(pos) {
         var gpxM = interp(calibSorted,'realKm','gpxM',km);
         var bear = bearingAtGpxM(gpxM);
-        var perpRad = (bear - 90) * Math.PI / 180;
+        var perpRad = (bear + 90) * Math.PI / 180;  // SO 101.2 NAD osu (opačná strana než zdi)
         var off = soOffset / 6371000;
         var lat = pos[0] + off*(180/Math.PI)*Math.cos(perpRad);
         var lng = pos[1] + off*(180/Math.PI)*Math.sin(perpRad)/Math.cos(pos[0]*Math.PI/180);
@@ -4145,7 +4145,7 @@ function buildSO() {
       var rot = bear2 - 90;
       rot = ((rot % 360) + 360) % 360;
       if(rot > 90 && rot < 270) rot -= 180;
-      var perpRad2 = (bear2 - 90) * Math.PI / 180;
+      var perpRad2 = (bear2 + 90) * Math.PI / 180;  // popisek SO 101.2 NAD osu
       var offExtra = 20 / 6371000;
       var latL = pts[pi][0] + offExtra*(180/Math.PI)*Math.cos(perpRad2);
       var lngL = pts[pi][1] + offExtra*(180/Math.PI)*Math.sin(perpRad2)/Math.cos(pts[pi][0]*Math.PI/180);
@@ -4386,7 +4386,7 @@ function _zdiOffsetPos(km, offM) {
   var pos = realKmToLatLng(km); if(!pos) return null;
   var gpxM = interp(calibSorted,'realKm','gpxM', km);
   var bear = bearingAtGpxM(gpxM);
-  var perpRad = (bear + 90) * Math.PI / 180; // vpravo od osy (opačná strana než propustky)
+  var perpRad = (bear - 90) * Math.PI / 180; // zdi POD osu (opačná strana než SO 101.2)
   var off = offM / 6371000;
   var lat = pos[0] + off*(180/Math.PI)*Math.cos(perpRad);
   var lng = pos[1] + off*(180/Math.PI)*Math.sin(perpRad)/Math.cos(pos[0]*Math.PI/180);
