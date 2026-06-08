@@ -5,13 +5,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js'
 importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey:            'DOPLNIT',
+  apiKey:            'AIzaSyCQo4JMeXucdP8p6Xq_YsFnI1bHQX9HoZE',
   authDomain:        'ii-101-dolni-brezany.firebaseapp.com',
   databaseURL:       'https://ii-101-dolni-brezany-default-rtdb.firebaseio.com',
   projectId:         'ii-101-dolni-brezany',
-  storageBucket:     'ii-101-dolni-brezany.appspot.com',
-  messagingSenderId: 'DOPLNIT',
-  appId:             'DOPLNIT'
+  storageBucket:     'ii-101-dolni-brezany.firebasestorage.app',
+  messagingSenderId: '813102551065',
+  appId:             '1:813102551065:web:632deea018a73055f81a88'
 });
 
 var messaging = firebase.messaging();

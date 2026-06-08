@@ -430,6 +430,20 @@ textarea.note-field { min-height:80px; resize:vertical; }
 }
 .prop-pin:hover { transform: scale(1.2); }
 
+/* Piny zdí SO 251.2 – velké číslo, klik otevře výkres té zdi */
+.zed-marker { background: transparent !important; border: none !important; overflow: visible !important; }
+.zed-pin {
+  min-width: 30px; height: 30px; padding: 0 5px;
+  background: #f59e0b;
+  border: 3px solid #fff;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: #1a1a2e; font-size: 15px; font-weight: 900;
+  box-shadow: 0 2px 7px rgba(0,0,0,.55);
+  cursor: pointer; transition: transform .15s; white-space: nowrap;
+}
+.zed-pin:hover { transform: scale(1.2); }
+
 /* Doplňkové SO markery (000, 300, 400, 500) - menší, barevné dle kategorie */
 .doplnek-marker {
   background: transparent !important;
@@ -1225,14 +1239,14 @@ var FIREBASE_URL = 'https://ii-101-dolni-brezany-default-rtdb.firebaseio.com'; /
 // nedostupné s instrukcí, co udělat. Realtime Database funguje i bez tohoto.
 // ════════════════════════════════════════════════════════════════════
 var FIREBASE_CONFIG = {                  /* DOPLNIT z Firebase Console → Project Settings → Web app */
-  apiKey:            'PLACEHOLDER_apiKey',  /* obsahuje 'PLACEHOLDER' = LEGACY MÓD: app jede otevřeně (mapa+poznámky+výkresy), úkolníček/push vypnuté. Pro zapnutí úkolníčku nahraď reálným apiKey z Firebase Console (shodně i ve firebase-messaging-sw.js!) */
+  apiKey:            'AIzaSyCQo4JMeXucdP8p6Xq_YsFnI1bHQX9HoZE',  /* reálný klíč → Auth ZAPNUTÝ (přihlašování). Firebase web config je veřejný (řízeno pravidly DB). Pozn.: pokud bys chtěl appku zase OTEVŘENOU bez loginu, vrať sem hodnotu obsahující 'PLACEHOLDER'. */
   authDomain:        'ii-101-dolni-brezany.firebaseapp.com',
   databaseURL:       FIREBASE_URL,
   projectId:         'ii-101-dolni-brezany',
-  storageBucket:     'ii-101-dolni-brezany.appspot.com',
-  messagingSenderId: 'DOPLNIT',
-  appId:             'DOPLNIT',
-  measurementId:     'DOPLNIT'
+  storageBucket:     'ii-101-dolni-brezany.firebasestorage.app',
+  messagingSenderId: '813102551065',
+  appId:             '1:813102551065:web:632deea018a73055f81a88',
+  measurementId:     'G-3GS980SHWY'
 };
 // VAPID klíč pro Web Push (Firebase Console → Project Settings → Cloud Messaging → Web Push certificates)
 // !! BEZ tohoto klíče push notifikace NEPŮJDOU. Klient i tak může fungovat, jen nepřijde upozornění.
@@ -1480,6 +1494,32 @@ var PROPUSTKY = [
 ];
 var PROPUSTEK_TZ = '';
 
+// ZDI SO 251.2 — číslované klikací piny na mapě; klik otevře výkres té zdi. km = střed zdi.
+var ZDI_SO = [
+  {"id": "Zeď 2", "cislo": 2, "km": 0.555, "nazev": "Zeď č.2 — SO 251.2 (km 0,520–0,590)", "soubor": "pdf/SO_251_2/zed_02.pdf"},
+  {"id": "Zeď 3", "cislo": 3, "km": 0.708, "nazev": "Zeď č.3 — SO 251.2 (km 0,625–0,790)", "soubor": "pdf/SO_251_2/zed_03.pdf"},
+  {"id": "Zeď 4", "cislo": 4, "km": 0.858, "nazev": "Zeď č.4 — SO 251.2 (km 0,790–0,925)", "soubor": "pdf/SO_251_2/zed_04.pdf"},
+  {"id": "Zeď 5", "cislo": 5, "km": 1.038, "nazev": "Zeď č.5 — SO 251.2 (km 1,000–1,075)", "soubor": "pdf/SO_251_2/zed_05.pdf"},
+  {"id": "Zeď 6", "cislo": 6, "km": 1.255, "nazev": "Zeď č.6 — SO 251.2 (km 1,090–1,420)", "soubor": "pdf/SO_251_2/zed_06.pdf"},
+  {"id": "Zeď 7", "cislo": 7, "km": 1.495, "nazev": "Zeď č.7 — SO 251.2 (km 1,485–1,505)", "soubor": "pdf/SO_251_2/zed_07.pdf"},
+  {"id": "Zeď 8", "cislo": 8, "km": 1.527, "nazev": "Zeď č.8 — SO 251.2 (km 1,515–1,540)", "soubor": "pdf/SO_251_2/zed_08.pdf"},
+  {"id": "Zeď 9", "cislo": 9, "km": 1.652, "nazev": "Zeď č.9 — SO 251.2 (km 1,640–1,665)", "soubor": "pdf/SO_251_2/zed_09.pdf"},
+  {"id": "Zeď 10", "cislo": 10, "km": 1.752, "nazev": "Zeď č.10 — SO 251.2 (km 1,740–1,765)", "soubor": "pdf/SO_251_2/zed_10.pdf"},
+  {"id": "Zeď 12", "cislo": 12, "km": 2.005, "nazev": "Zeď č.12 — SO 251.2 (km 1,955–2,055)", "soubor": "pdf/SO_251_2/zed_12.pdf"},
+  {"id": "Zeď 13", "cislo": 13, "km": 2.145, "nazev": "Zeď č.13 — SO 251.2 (km 2,125–2,165)", "soubor": "pdf/SO_251_2/zed_13.pdf"},
+  {"id": "Zeď 14", "cislo": 14, "km": 2.317, "nazev": "Zeď č.14 — SO 251.2 (km 2,300–2,335)", "soubor": "pdf/SO_251_2/zed_14.pdf"},
+  {"id": "Zeď 15", "cislo": 15, "km": 2.415, "nazev": "Zeď č.15 — SO 251.2 (km 2,390–2,440)", "soubor": "pdf/SO_251_2/zed_15.pdf"},
+  {"id": "Zeď 16", "cislo": 16, "km": 2.59, "nazev": "Zeď č.16 — SO 251.2 (km 2,545–2,635)", "soubor": "pdf/SO_251_2/zed_16.pdf"},
+  {"id": "Zeď 17", "cislo": 17, "km": 2.69, "nazev": "Zeď č.17 — SO 251.2 (km 2,680–2,700)", "soubor": "pdf/SO_251_2/zed_17.pdf"},
+  {"id": "Zeď 18", "cislo": 18, "km": 2.748, "nazev": "Zeď č.18 — SO 251.2 (km 2,730–2,765)", "soubor": "pdf/SO_251_2/zed_18.pdf"},
+  {"id": "Zeď 19", "cislo": 19, "km": 2.805, "nazev": "Zeď č.19 — SO 251.2 (km 2,780–2,830)", "soubor": "pdf/SO_251_2/zed_19.pdf"},
+  {"id": "Zeď 21", "cislo": 21, "km": 3.01, "nazev": "Zeď č.21 — SO 251.2 (km 2,985–3,035)", "soubor": "pdf/SO_251_2/zed_21.pdf"},
+  {"id": "Zeď 22", "cislo": 22, "km": 3.157, "nazev": "Zeď č.22 — SO 251.2 (km 3,105–3,210)", "soubor": "pdf/SO_251_2/zed_22.pdf"},
+  {"id": "Zeď 23", "cislo": 23, "km": 3.309, "nazev": "Zeď č.23 — SO 251.2 (km 3,225–3,394)", "soubor": "pdf/SO_251_2/zed_23.pdf"},
+  {"id": "Zeď 24", "cislo": 24, "km": 3.43, "nazev": "Zeď č.24 — SO 251.2 (km 3,415–3,445)", "soubor": "pdf/SO_251_2/zed_24.pdf"},
+  {"id": "Zeď 25", "cislo": 25, "km": 3.658, "nazev": "Zeď č.25 — SO 251.2 (km 3,615–3,700)", "soubor": "pdf/SO_251_2/zed_25.pdf"}
+];
+
 // DOPLŇKOVÉ BODOVÉ SO (000=demolice, 300=IS, 400=VO, 500=plynovod). Viz datova-pole.md §6.
 // kmShift = posun po ose (km), perpOffset = posun kolmo k ose (px) → rozprostře markery.
 // Formát: {id:'SO 441', kat:'400', badge:'VO1', km:2.756, kmShift:0, perpOffset:55, nazev:'…', vykresy:[…]}
@@ -1594,7 +1634,7 @@ function showToast(msg,dur) {
 // ── MAPA ──────────────────────────────
 function initMap() {
   map=L.map('map',{
-    center:[49.917,14.580],
+    center: (typeof GPX_POINTS!=='undefined' && GPX_POINTS.length) ? GPX_POINTS[Math.floor(GPX_POINTS.length/2)] : [49.917,14.580],
     zoom:14,
     maxZoom:20,
     zoomControl:true,
@@ -2229,7 +2269,12 @@ function centerGPS() {
 
 function resetMapView() {
   if(!map) return;
-  map.setView([49.917, 14.580], 14);
+  // Vždy se vejdi na CELOU osu této stavby (NE natvrdo souřadnice!).
+  if(typeof GPX_POINTS !== 'undefined' && GPX_POINTS.length){
+    map.fitBounds(L.latLngBounds(GPX_POINTS.map(function(p){return [p[0],p[1]];})), {padding:[40,40]});
+  } else if(typeof CALIB_POINTS !== 'undefined' && CALIB_POINTS.length){
+    map.fitBounds(L.latLngBounds(CALIB_POINTS.map(function(p){return [p.lat,p.lng];})), {padding:[40,40]});
+  }
 }
 function toggleLayers(){document.getElementById('layers-panel').classList.toggle('open');}
 function closeLayersPanel(){document.getElementById('layers-panel').classList.remove('open');}
@@ -2274,6 +2319,7 @@ function init() {
   if(ETAPY.length) buildEtapy();
   if(CISTENI_PRIKOPY.vpravo.length || CISTENI_PRIKOPY.vlevo.length) buildPrikopy();
   buildPropustky();
+  buildZdi();
   buildDoplnky();
   buildVedeniNN();
   map.fitBounds(L.latLngBounds(GPX_POINTS.map(function(p){return[p[0],p[1]];})),{padding:[40,40]});
@@ -3791,28 +3837,6 @@ var SANACE = [];
 // Viz reference/datova-pole.md §5. DOPLNIT:
 var STAVEBNI_OBJEKTY = [
   {id:'SO 101.2', kmOd:0.000, kmDo:3.844, barva:'#3b82f6', label:'SO 101.2', short:'SO 101.2 - rekonstrukce komunikace (km 0,000–3,844)'},
-{"id": "SO 251.2 z2", "kmOd": 0.52, "kmDo": 0.59, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.2 (km 0,520–0,590)"},
-  {"id": "SO 251.2 z3", "kmOd": 0.625, "kmDo": 0.79, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.3 (km 0,625–0,790)"},
-  {"id": "SO 251.2 z4", "kmOd": 0.79, "kmDo": 0.925, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.4 (km 0,790–0,925)"},
-  {"id": "SO 251.2 z5", "kmOd": 1.0, "kmDo": 1.075, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.5 (km 1,000–1,075)"},
-  {"id": "SO 251.2 z6", "kmOd": 1.09, "kmDo": 1.42, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.6 (km 1,090–1,420)"},
-  {"id": "SO 251.2 z7", "kmOd": 1.485, "kmDo": 1.505, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.7 (km 1,485–1,505)"},
-  {"id": "SO 251.2 z8", "kmOd": 1.515, "kmDo": 1.54, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.8 (km 1,515–1,540)"},
-  {"id": "SO 251.2 z9", "kmOd": 1.64, "kmDo": 1.665, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.9 (km 1,640–1,665)"},
-  {"id": "SO 251.2 z10", "kmOd": 1.74, "kmDo": 1.765, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.10 (km 1,740–1,765)"},
-  {"id": "SO 251.2 z12", "kmOd": 1.955, "kmDo": 2.055, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.12 (km 1,955–2,055)"},
-  {"id": "SO 251.2 z13", "kmOd": 2.125, "kmDo": 2.165, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.13 (km 2,125–2,165)"},
-  {"id": "SO 251.2 z14", "kmOd": 2.3, "kmDo": 2.335, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.14 (km 2,300–2,335)"},
-  {"id": "SO 251.2 z15", "kmOd": 2.39, "kmDo": 2.44, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.15 (km 2,390–2,440)"},
-  {"id": "SO 251.2 z16", "kmOd": 2.545, "kmDo": 2.635, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.16 (km 2,545–2,635)"},
-  {"id": "SO 251.2 z17", "kmOd": 2.68, "kmDo": 2.7, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.17 (km 2,680–2,700)"},
-  {"id": "SO 251.2 z18", "kmOd": 2.73, "kmDo": 2.765, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.18 (km 2,730–2,765)"},
-  {"id": "SO 251.2 z19", "kmOd": 2.78, "kmDo": 2.83, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.19 (km 2,780–2,830)"},
-  {"id": "SO 251.2 z21", "kmOd": 2.985, "kmDo": 3.035, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.21 (km 2,985–3,035)"},
-  {"id": "SO 251.2 z22", "kmOd": 3.105, "kmDo": 3.21, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.22 (km 3,105–3,210)"},
-  {"id": "SO 251.2 z23", "kmOd": 3.225, "kmDo": 3.394, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.23 (km 3,225–3,394)"},
-  {"id": "SO 251.2 z24", "kmOd": 3.415, "kmDo": 3.445, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.24 (km 3,415–3,445)"},
-  {"id": "SO 251.2 z25", "kmOd": 3.615, "kmDo": 3.7, "barva": "#f59e0b", "label": "SO 251.2", "short": "SO 251.2 - opěrná zeď č.25 (km 3,615–3,700)"}
 ];
 
 // ═══════════════════════════════════
@@ -3937,7 +3961,7 @@ function buildSO() {
 
     var line = L.polyline(pts, {color:so.barva, weight:7, opacity:0.55});
     line.bindPopup(
-      '<b>' + so.id + '</b> // Oprava silnice I/3' +
+      '<b>' + so.id + '</b> // II/101 Dolní Břežany–Zbraslav' +
       '<br>km <b>' + fmtKm(so.kmOd) + ' – ' + fmtKm(so.kmDo) + '</b>',
       {className:'so-tooltip', maxWidth:240}
     );
@@ -4179,6 +4203,32 @@ function buildPropustky() {
     var m = L.marker(pos, {icon:icon, interactive:true, zIndexOffset:200});
     (function(prop){ m.on('click', function(e){ L.DomEvent.stopPropagation(e); openPropPanel(prop); }); })(p);
     m.addTo(propLayer);
+  });
+}
+
+var zdiLayer = null;
+function buildZdi() {
+  if(typeof ZDI_SO === 'undefined' || !ZDI_SO.length) return;
+  zdiLayer = L.layerGroup().addTo(map);
+  layerGroups.zdi = zdiLayer;
+  ZDI_SO.forEach(function(z) {
+    var pos = realKmToLatLng(z.km);
+    if(!pos) return;
+    var gpxM = interp(calibSorted,'realKm','gpxM', z.km);
+    var bear = bearingAtGpxM(gpxM);
+    var perpRad = (bear + 90) * Math.PI / 180; // vpravo od osy (opačná strana než propustky)
+    var offset = 64;
+    var dx = Math.sin(perpRad) * offset;
+    var dy = -Math.cos(perpRad) * offset;
+    var DW = 40, DH = 40;
+    var ancX = Math.round(DW/2 + dx);
+    var ancY = Math.round(DH/2 + dy);
+    var html = '<div style="width:'+DW+'px;height:'+DH+'px;display:flex;align-items:center;justify-content:center;pointer-events:all;cursor:pointer;">'+
+      '<div class="zed-pin" title="'+escapeHtml(z.nazev)+'">'+z.cislo+'</div></div>';
+    var icon = L.divIcon({className:'zed-marker', html:html, iconSize:[DW,DH], iconAnchor:[ancX,ancY]});
+    var m = L.marker(pos, {icon:icon, interactive:true, zIndexOffset:190});
+    (function(zed){ m.on('click', function(e){ L.DomEvent.stopPropagation(e); openPropPanel({id:zed.id, km:zed.km, nazev:zed.nazev, vykresy:[{typ:'🧱 Tvar zdi', nazev:zed.nazev, soubor:zed.soubor}]}); }); })(z);
+    m.addTo(zdiLayer);
   });
 }
 
