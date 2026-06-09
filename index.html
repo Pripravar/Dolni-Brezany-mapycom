@@ -4868,6 +4868,16 @@ var SO_OBJEKTY = (function(){
     var short = String(d.nazev || d.id).replace(d.id + ' - ', '').replace(/\s*\(km[^)]*\)\s*$/i, '').trim();
     list.push({ id:d.id, short:short, kmOd:d.km, kmDo:d.km });
   });
+  // Konkrétní zdi SO 251.2 – ať jde fotku přiřadit ke zdi (ne jen k celé SO 251.2)
+  (typeof ZDI_SO !== 'undefined' ? ZDI_SO : []).forEach(function(z){
+    if(!z || typeof z.kmOd !== 'number') return;
+    list.push({ id:'Zeď '+z.cislo+' (SO 251.2)', short:(z.zaloz==='mikro'?'mikropiloty':'plošně'), kmOd:z.kmOd, kmDo:z.kmKonec });
+  });
+  // Propustky
+  (typeof PROPUSTKY !== 'undefined' ? PROPUSTKY : []).forEach(function(p){
+    if(!p || typeof p.km !== 'number') return;
+    list.push({ id:p.id, short:'propustek', kmOd:p.km, kmDo:p.km });
+  });
   return list;
 })();
 
